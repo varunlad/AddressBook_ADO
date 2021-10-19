@@ -22,7 +22,7 @@ namespace ADO_AddressBook
                 //Creating object for addressModel and access the fields
                 AddressModel addressModel = new AddressModel();
                 //Retrieve query
-                string query = @"select * from AddressBookTable where City='Panvel' ";
+                string query = @"select * from AddressBookTable  ";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlconnection);
                 //Open the connection
                 this.sqlconnection.Open();
@@ -62,6 +62,44 @@ namespace ADO_AddressBook
                 this.sqlconnection.Close();
             }
         }
-        
+        public void AddAddress(AddressModel model)
+        {
+            try
+            {
+
+                using (this.sqlconnection)
+                {
+                    SqlCommand command = new SqlCommand("dbo.spAddAddressDookDetails", this.sqlconnection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@FName", model.FName);
+                    command.Parameters.AddWithValue("@LName", model.LName);
+                    command.Parameters.AddWithValue("@Address", model.Address);
+                    command.Parameters.AddWithValue("@City", model.City);
+                    command.Parameters.AddWithValue("@State", model.State);
+                    command.Parameters.AddWithValue("@Phone", model.Phone);
+                    command.Parameters.AddWithValue("@ZipCode", model.ZipCode);
+                    command.Parameters.AddWithValue("@Email", model.Email);
+                    sqlconnection.Open();
+                    var result = command.ExecuteNonQuery();
+
+                    if (result != 0)
+                    {
+                        Console.WriteLine("Successfully inserted the records");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Insertion of result is unsuccessfull");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                sqlconnection.Close();
+            }
+        }
     }
 }
