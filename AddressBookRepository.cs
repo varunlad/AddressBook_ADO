@@ -62,7 +62,38 @@ namespace ADO_AddressBook
                 this.sqlconnection.Close();
             }
         }
-        
-        
+        public void UpdateAddress(AddressModel model)
+        {
+            try
+            {
+                using (this.sqlconnection)
+                {
+                    AddressModel DisplayModel = new AddressModel();
+                    SqlCommand command = new SqlCommand("dbo.spUpdateAddressDookDetails", this.sqlconnection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@FName", model.FName);
+                    command.Parameters.AddWithValue("@LName", model.LName);
+                    command.Parameters.AddWithValue("@Address", model.Address);
+                    sqlconnection.Open();
+                    int result = command.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        Console.WriteLine("Update Sucessfull");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Unsucessfull");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                sqlconnection.Close();
+            }
+        }
     }
 }
