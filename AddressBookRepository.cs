@@ -22,7 +22,7 @@ namespace ADO_AddressBook
                 //Creating object for addressModel and access the fields
                 AddressModel addressModel = new AddressModel();
                 //Retrieve query
-                string query = @"select * from AddressBookTable where StartDate >'2015-01-01' and StartDate <'2020-01-01' ";
+                string query = @"select * from AddressBookTable where City='Panvel' ";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlconnection);
                 //Open the connection
                 this.sqlconnection.Open();
