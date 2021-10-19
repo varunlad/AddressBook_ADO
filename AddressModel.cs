@@ -1,4 +1,6 @@
-﻿namespace ADO_AddressBook
+﻿using System;
+
+namespace ADO_AddressBook
 {
     class AddressModel
     {
@@ -12,6 +14,8 @@
         public string Email { get; set; }
         public double ZipCode { get; set; }
         public double Phone { get; set; }
-    
+       public DateTime startDate { get; set; }
+
+
     }
 }

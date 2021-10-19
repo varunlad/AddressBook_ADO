@@ -22,7 +22,7 @@ namespace ADO_AddressBook
                 //Creating object for addressModel and access the fields
                 AddressModel addressModel = new AddressModel();
                 //Retrieve query
-                string query = @"select * from AddressBookTable";
+                string query = @"select * from AddressBookTable where StartDate >'2015-01-01' and StartDate <'2020-01-01' ";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlconnection);
                 //Open the connection
                 this.sqlconnection.Open();
@@ -41,9 +41,9 @@ namespace ADO_AddressBook
                         addressModel.Address = reader["Address"] == DBNull.Value ? default : reader["Address"].ToString();
                         addressModel.Phone = Convert.ToDouble(reader["PhoneNumber"] == DBNull.Value ? default : reader["PhoneNumber"]);
                         addressModel.Email= reader["Email"] == DBNull.Value ? default : reader["Email"].ToString();
+                        addressModel.startDate = (DateTime)(reader["StartDate"] == DBNull.Value ? default(DateTime) : reader["StartDate"]);
 
-
-                        Console.WriteLine("{0} {1} {2}  {3} {4} {5}  {6}  {7} {8}  ", addressModel.AddressId, addressModel.FName, addressModel.LName, addressModel.State, addressModel.City, addressModel.ZipCode, addressModel.Address, addressModel.Phone, addressModel.Email);
+                        Console.WriteLine("{0} {1} {2}  {3} {4} {5}  {6}  {7} {8} {9} ", addressModel.AddressId, addressModel.FName, addressModel.LName, addressModel.State, addressModel.City, addressModel.ZipCode, addressModel.Address, addressModel.Phone, addressModel.Email,addressModel.startDate);
                         Console.WriteLine("\n");
                     }
                 }
@@ -62,38 +62,6 @@ namespace ADO_AddressBook
                 this.sqlconnection.Close();
             }
         }
-        public void UpdateAddress(AddressModel model)
-        {
-            try
-            {
-                using (this.sqlconnection)
-                {
-                    AddressModel DisplayModel = new AddressModel();
-                    SqlCommand command = new SqlCommand("dbo.spUpdateAddressDookDetails", this.sqlconnection);
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@FName", model.FName);
-                    command.Parameters.AddWithValue("@LName", model.LName);
-                    command.Parameters.AddWithValue("@Address", model.Address);
-                    sqlconnection.Open();
-                    int result = command.ExecuteNonQuery();
-                    if (result != 0)
-                    {
-                        Console.WriteLine("Update Sucessfull");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Unsucessfull");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            finally
-            {
-                sqlconnection.Close();
-            }
-        }
+        
     }
 }
